@@ -10,7 +10,6 @@ export type AirClientEvents = {
 }
 
 export interface AirClientConfig extends RTCConfiguration {
-  sdpSemantics?: "plan-b" | "unified-plan",
   constraints?: MediaStreamConstraints,
   rtcConfig?: RTCConfiguration,
   host?: string, //e.g. http://localhost:19000
