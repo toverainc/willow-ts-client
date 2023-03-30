@@ -1,0 +1,61 @@
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebRTC ASR</title>
+    <style>
+    button {
+        padding: 8px 16px;
+    }
+
+    pre {
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .option {
+        margin-bottom: 8px;
+    }
+
+    #media {
+        max-width: 1280px;
+    }
+    </style>
+    <script src="bundle.js"></script>
+    <script>
+        async function main(){
+            window.client = new AirClient()
+            const logEle = document.getElementById('data-channel')
+            client.on('onLog', (log)=>{
+                logEle.textContent += log + "\n"
+            })
+            const verboseLogEle = document.getElementById('verbose-log')
+            client.on('onVerboseLog', (log)=>{
+                verboseLogEle.textContent += log + "\n"
+            })
+            await client.init();
+        }
+        document.addEventListener("DOMContentLoaded", function() { 
+            main().catch(console.error)
+        })
+    </script>
+</head>
+<body>
+<h1>WebRTC ASR</h1>
+
+<button id="start" onclick="window.client.start()">Start</button>
+<button id="stop" onclick="window.client.stop()">Stop</button>
+<button id="disconnect" onclick="window.client.disconnect()">Disconnect</button>
+
+<h2>Log</h2>
+<p>
+    <textarea id="data-channel" style="margin: 0px; height: 300px; width: 800px"></textarea>
+</p>
+
+<h2>Verbose Log</h2>
+<p>
+    <textarea id="verbose-log" style="margin: 0px; height: 300px; width: 800px"></textarea>
+</p>
+
+</body>
+</html>

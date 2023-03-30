@@ -1,0 +1,26 @@
+{
+  "name": "air-infer-client",
+  "version": "0.8.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/toverainc/air-infer-client.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/toverainc/air-infer-client/issues"
+  },
+  "homepage": "https://github.com/toverainc/air-infer-client#readme",
+  "devDependencies": {
+    "ts-loader": "^9.4.2",
+    "typed-emitter": "^2.1.0",
+    "typescript": "^5.0.2",
+    "webpack": "^5.77.0",
+    "webpack-cli": "^5.0.1"
+  }
+}
