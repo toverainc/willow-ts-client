@@ -179,7 +179,7 @@ export class WillowClient extends (EventEmitter as new () => TypedEmitter<Willow
         await this.mute(true)
     }
 
-    private async negotiate(attempts: number = 4, attemptBackoff: number = 5000) {
+    private async negotiate(attempts: number = 1, attemptBackoff: number = 5000) {
         const pc = this.pc
         const start = +new Date()
         await pc.setLocalDescription(await pc.createOffer());
