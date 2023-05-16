@@ -1,7 +1,7 @@
 import EventEmitter from "events"
 import TypedEmitter from "typed-emitter"
 
-export type AirClientEvents = {
+export type WillowClientEvents = {
     onLog: (msg: string) => void,
     onError: (msg: string) => void,
     onMessage: (msg: DataChannelMessage) => void,
@@ -10,7 +10,7 @@ export type AirClientEvents = {
     onOpen: () => void;
 }
 
-export interface AirClientConfig {
+export interface WillowClientConfig {
     constraints?: MediaStreamConstraints,
     rtcConfig?: RTCConfiguration,
     host?: string, //e.g. http://localhost:19000
@@ -22,14 +22,14 @@ export interface DataChannelMessage<T = any> {
     obj?: T;
 }
 
-export default class AirClient extends (EventEmitter as new () => TypedEmitter<AirClientEvents>) {
-    config: AirClientConfig
+export default class WillowClient extends (EventEmitter as new () => TypedEmitter<WillowClientEvents>) {
+    config: WillowClientConfig
     pc: RTCPeerConnection
     dc: RTCDataChannel
     stream: MediaStream | undefined
     private lastStop: number = 0
     recording: boolean = false
-    constructor(config: AirClientConfig) {
+    constructor(config: WillowClientConfig) {
         super()
         config = config || {}
         config.rtcConfig = Object.assign({
@@ -213,7 +213,7 @@ export default class AirClient extends (EventEmitter as new () => TypedEmitter<A
         await pc.setRemoteDescription(answer)
     }
 }
-//(global as any).AirClient = AirClient
+//(global as any).WillowClient = WillowClient
 
 function sdpFilterCodec(kind: 'audio', codec: string, realSdp: string) {
     var allowed = []

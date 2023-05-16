@@ -1,5 +1,5 @@
 {
-  "name": "air-infer-client",
+  "name": "@tovera/willow-ts-client",
   "version": "0.8.4",
   "description": "",
   "main": "dist/bundle.js",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/toverainc/air-infer-client.git"
+    "url": "git+https://github.com/toverainc/willow-ts-client.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/toverainc/air-infer-client/issues"
+    "url": "https://github.com/toverainc/willow-ts-client/issues"
   },
-  "homepage": "https://github.com/toverainc/air-infer-client",
+  "homepage": "https://github.com/toverainc/willow-ts-client",
   "devDependencies": {
     "ts-loader": "^9.4.2",
     "typed-emitter": "^2.1.0",

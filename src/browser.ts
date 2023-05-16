@@ -1,3 +1,3 @@
-import AirClient from './index'
+import WillowClient from './index'
 
-(window as any).AirClient = AirClient
+(window as any).WillowClient = WillowClient
