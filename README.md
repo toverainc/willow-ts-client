@@ -16,16 +16,18 @@ npm install @tovera/willow-ts-client
 import { WillowClient } from '@tovera/willow-ts-client'
 const client = new WillowClient({ host: "http://localhost:19000/api/rtc/asr" })
 client.on('onOpen', () => {
-  console.log('connection open')
+  console.log('Connection open. Recording for 30 seconds.')
+  client.start()
+  setTimeout(()=>client.stop(), 30*1000)
 })
 client.on('onLog', (log) => {
-  console.log('verbose server log: ' + log)
+  console.log('Verbose server log: ' + log)
 })
 client.on('onError', (err) => {
-  console.error('willow WebRTC Error', err)
+  console.error('Willow WebRTC Error', err)
 })
 client.on('onInfer', (msg) => {
-  console.log(`got result ${msg.text} in ${msg.time}ms`)
+  console.log(`Got result ${msg.text} in ${msg.time}ms`)
 })
 await client.init();
 ```
