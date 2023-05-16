@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build-dev": "webpack",
-    "build": "webpack --mode production",
+    "build": "typedoc ./src/index.ts && webpack --mode production",
     "prepublish": "webpack --mode production"
   },
   "repository": {

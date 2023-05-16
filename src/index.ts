@@ -2,27 +2,41 @@ import EventEmitter from "events"
 import TypedEmitter from "typed-emitter"
 
 export type WillowClientEvents = {
+    /** Emitted whenever the client wants to log something. This is verbose. */
     onLog: (msg: string) => void,
+    /** Emitted whenever the client encounters an error. */
     onError: (msg: string) => void,
+    /** Emitted whenever the client receives a data channel message from the server */
     onMessage: (msg: DataChannelMessage) => void,
+    /** Emitted whenever the client receives a speech to text inference result from the server */
     onInfer: (results: { text: string, time: number }) => void,
+    /** Emitted when the WebRTC connection is closed for any reason. */
     onClose: () => void;
+    /** Emitted when the WebRTC connection is first opened. */
     onOpen: () => void;
 }
 
+/** Config class for willow client.  */
 export interface WillowClientConfig {
+    /** See https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia */
     constraints?: MediaStreamConstraints,
+    /** See https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/RTCPeerConnection */
     rtcConfig?: RTCConfiguration,
-    host?: string, //e.g. http://localhost:19000
+    /** The host to connect to for infrance. This should include path. */
+    host?: string, //e.g. http://localhost:19000/api/rtc/asr
 }
 
+/** Type of any data channel message returned by the server. */
 export interface DataChannelMessage<T = any> {
     type: string,
     message?: string,
     obj?: T;
 }
 
-export default class WillowClient extends (EventEmitter as new () => TypedEmitter<WillowClientEvents>) {
+/**
+ * The main class for interacting with library. An event emitter that establishes and maintains connection.
+ */
+export class WillowClient extends (EventEmitter as new () => TypedEmitter<WillowClientEvents>) {
     config: WillowClientConfig
     pc: RTCPeerConnection
     dc: RTCDataChannel
@@ -56,15 +70,18 @@ export default class WillowClient extends (EventEmitter as new () => TypedEmitte
         return this.pc.getSenders()[0]
     }
 
+    /** Indicates if the client is currently connected. */
     get connected(): boolean {
         return this.dc.readyState === "open"
     }
 
+    /** Mutes the current client. Generally you want to call `stop()` instead. */
     async mute(mute: boolean) {
         if (!this.sender || !this.stream) return;
         await this.sender.replaceTrack(mute ? null : this.track)
     }
 
+    /** Starts sending recorded voice to the server. Call `stop()` to trigger inference. */
     async start() {
         if (this.recording) return;
         this.recording = true;
@@ -72,11 +89,13 @@ export default class WillowClient extends (EventEmitter as new () => TypedEmitte
         await this.sendMessage({ type: 'start' })
     }
 
+    /** Used internally. Can also be called if you want to send custom message to server on data channel. */
     async sendMessage(message: DataChannelMessage) {
         if (!message.type) throw new Error("DataChannelMessage must have a type");
         await this.dc.send(JSON.stringify(message))
     }
 
+    /** Stops recording and triggers inference which will be emmited via "onInfer" event. */
     async stop() {
         if (!this.recording) return;
         this.recording = false;
@@ -88,6 +107,7 @@ export default class WillowClient extends (EventEmitter as new () => TypedEmitte
         ])
     }
 
+    /** Forces the WebRTC connection closed */
     async disconnect() {
         try {
             this.pc.getSenders().forEach((sender) => sender.track.stop());
@@ -110,6 +130,7 @@ export default class WillowClient extends (EventEmitter as new () => TypedEmitte
         }
     }
 
+    /** After the client is constructed call this to initalize and connect to ASR server.*/
     async init() {
         const pc = this.pc;
         const dc = this.dc;
@@ -158,7 +179,7 @@ export default class WillowClient extends (EventEmitter as new () => TypedEmitte
         await this.mute(true)
     }
 
-    async negotiate(attempts: number = 4, attemptBackoff: number = 5000) {
+    private async negotiate(attempts: number = 4, attemptBackoff: number = 5000) {
         const pc = this.pc
         const start = +new Date()
         await pc.setLocalDescription(await pc.createOffer());
