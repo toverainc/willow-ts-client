@@ -2,9 +2,11 @@
   "name": "air-infer-client",
   "version": "0.8.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/bundle.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "prepublish": "webpack"
   },
   "repository": {
     "type": "git",
@@ -15,7 +17,7 @@
   "bugs": {
     "url": "https://github.com/toverainc/air-infer-client/issues"
   },
-  "homepage": "https://github.com/toverainc/air-infer-client#readme",
+  "homepage": "https://github.com/toverainc/air-infer-client",
   "devDependencies": {
     "ts-loader": "^9.4.2",
     "typed-emitter": "^2.1.0",
