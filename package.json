@@ -1,6 +1,6 @@
 {
   "name": "air-infer-client",
-  "version": "0.8.3",
+  "version": "0.8.4",
   "description": "",
   "main": "dist/bundle.js",
   "types": "dist/index.d.ts",
