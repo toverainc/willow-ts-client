@@ -136,10 +136,7 @@ export default class AirClient extends (EventEmitter as new () => TypedEmitter<A
             if (message.type == "log") {
                 this.emit('onLog', message.message)
             } else if (message.type == "infer") {
-                this.emit('onInfer', {
-                    text: message.obj as any,
-                    time: new Date().getTime() - this.lastStop
-                })
+                this.emit('onInfer', Object.assign(message.obj, { time: new Date().getTime() - this.lastStop }))
             } else if (message.type == "error") {
                 this.emit('onError', message.message)
             } else {
@@ -172,7 +169,7 @@ export default class AirClient extends (EventEmitter as new () => TypedEmitter<A
                     return resolve();
                 }
                 const checkState = () => {
-                    let shouldEarlyAttempt = attempt < attempts && (+new Date() - start > attempt*attemptBackoff)
+                    let shouldEarlyAttempt = attempt < attempts && (+new Date() - start > attempt * attemptBackoff)
                     if (pc.iceGatheringState === 'complete' || shouldEarlyAttempt) {
                         pc.removeEventListener('icegatheringstatechange', checkState);
                         pc.removeEventListener('icecandidate', checkState);
@@ -181,8 +178,8 @@ export default class AirClient extends (EventEmitter as new () => TypedEmitter<A
                 }
                 pc.addEventListener('icegatheringstatechange', checkState);
                 pc.addEventListener('icecandidate', checkState);
-                setTimeout(checkState, attemptBackoff+Math.random()*200)
-                setTimeout(() => reject('ICE gathering timed out'), 10*60*1000) //sanity fail
+                setTimeout(checkState, attemptBackoff + Math.random() * 200)
+                setTimeout(() => reject('ICE gathering timed out'), 10 * 60 * 1000) //sanity fail
             })
             const offer = pc.localDescription;
             this.emit('onLog', `localDescription offer ${JSON.stringify(offer, null, 2)}`)
@@ -192,14 +189,14 @@ export default class AirClient extends (EventEmitter as new () => TypedEmitter<A
             // The route in FastAPI supports all oftyped-emitter the usual URL params to control ASR
             try {
                 const controller = new AbortController();
-                const id = setTimeout(() => controller.abort(), 30*1000);
+                const id = setTimeout(() => controller.abort(), 30 * 1000);
                 var answer = await (await fetch(`${this.config.host}`, {
                     method: 'POST',
                     body: JSON.stringify({
                         sdp: offer.sdp,
                         type: offer.type
                     }),
-                    headers: { 'Content-Type': 'application/json'},
+                    headers: { 'Content-Type': 'application/json' },
                     signal: controller.signal,
                 })).json();
                 clearTimeout(id)
@@ -208,7 +205,7 @@ export default class AirClient extends (EventEmitter as new () => TypedEmitter<A
                 this.emit('onLog', `negotiate attempt #${attempt} failed`)
             }
         }
-        if(!answer){
+        if (!answer) {
             const msg = 'Could not complete negotiation with server'
             this.emit('onError', msg)
             throw new Error(msg)
