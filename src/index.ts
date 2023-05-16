@@ -210,7 +210,7 @@ export class WillowClient extends (EventEmitter as new () => TypedEmitter<Willow
             // The route in FastAPI supports all oftyped-emitter the usual URL params to control ASR
             try {
                 const controller = new AbortController();
-                const id = setTimeout(() => controller.abort(), 30 * 1000);
+                const id = setTimeout(() => controller.abort(), 60 * 1000);
                 var answer = await (await fetch(`${this.config.host}`, {
                     method: 'POST',
                     body: JSON.stringify({
@@ -223,7 +223,7 @@ export class WillowClient extends (EventEmitter as new () => TypedEmitter<Willow
                 clearTimeout(id)
                 break; //success... return
             } catch (error) {
-                this.emit('onLog', `negotiate attempt #${attempt} failed`)
+                this.emit('onLog', `negotiate attempt #${attempt} failed ${error}`)
             }
         }
         if (!answer) {
