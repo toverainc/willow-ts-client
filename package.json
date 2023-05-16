@@ -1,12 +1,13 @@
 {
   "name": "air-infer-client",
-  "version": "0.8.0",
+  "version": "0.8.2",
   "description": "",
   "main": "dist/bundle.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "webpack",
-    "prepublish": "webpack"
+    "build-dev": "webpack",
+    "build": "webpack --mode production",
+    "prepublish": "webpack --mode production"
   },
   "repository": {
     "type": "git",
