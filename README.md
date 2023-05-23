@@ -2,7 +2,7 @@
 
 # Willow TS Client
 
-This repo contains the TypeScript client for interacting with Willow's WebRTC component. Detailed docs can be [found here](https://toverainc.github.io/willow-ts-client/).
+This repo contains the TypeScript client for interacting with Willow Inference Server WebRTC component. Detailed docs can be [found here](https://toverainc.github.io/willow-ts-client/).
 
 ## Installation
 
