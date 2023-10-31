@@ -24,6 +24,7 @@ const nodeConfig = {
 const browserConfig = {
   mode: 'development',
   entry: './src/browser.ts',
+  target: 'browserslist',
   module: {
     rules: [
       {
